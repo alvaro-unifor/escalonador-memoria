@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         int[] referencias = {1, 3, 0, 3, 5, 6, 3, 0, 1, 5}; // sequência de páginas acessadas
-        int quadros = 3; // número de quadros na memória
+        int quadros = 3; // número de quadros na memória +++++++
 
         // Algoritmo do Relógio (existente)
         AlgoritmoRelogio relogio = new AlgoritmoRelogio(quadros);
