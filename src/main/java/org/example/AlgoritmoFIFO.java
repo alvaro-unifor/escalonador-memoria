@@ -1,33 +1,45 @@
 package org.example;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlgoritmoFIFO {
-    private int quadros;
+    private List<Pagina> paginas;
+    private int capacidade;
 
-    public AlgoritmoFIFO(int quadros) {
-        this.quadros = quadros;
+    public AlgoritmoFIFO(int capacidade) {
+        this.capacidade = capacidade;
+        this.paginas = new ArrayList<>();
     }
 
     public int simular(int[] referencias) {
-        Queue<Integer> fila = new LinkedList<>();
-        Set<Integer> naMemoria = new HashSet<>();
-        int faltas = 0;
-        
-        for (int pagina : referencias) {
-            if (!naMemoria.contains(pagina)) {
-                faltas++;
-                if (fila.size() == quadros) {
-                    int maisAntiga = fila.poll();
-                    naMemoria.remove(maisAntiga);
-                }
-                fila.add(pagina);
-                naMemoria.add(pagina);
+        int faltasDePagina = 0;
+
+        for (int ref : referencias) {
+            if (!contem(ref)) {
+                faltasDePagina++;
+                adicionar(ref);
             }
         }
-        return faltas;
+
+        return faltasDePagina;
+    }
+
+    private boolean contem(int valor) {
+        for (Pagina pagina : paginas) {
+            if (pagina.getValor() == valor) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void adicionar(int valor) {
+        if (paginas.size() < capacidade) {
+            paginas.add(new Pagina(valor));
+        } else {
+            paginas.remove(0);
+            paginas.add(new Pagina(valor));
+        }
     }
 }

@@ -1,44 +1,70 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlgoritmoNFU {
-    private int quadros;
-    private Map<Integer, Integer> contadorUso;
+    private List<Pagina> paginas;
+    private int capacidade;
+    private int[] contadorUso;
 
-    public AlgoritmoNFU(int quadros) {
-        this.quadros = quadros;
-        this.contadorUso = new HashMap<>();
+    public AlgoritmoNFU(int capacidade) {
+        this.capacidade = capacidade;
+        this.paginas = new ArrayList<>();
+        this.contadorUso = new int[capacidade];
     }
 
     public int simular(int[] referencias) {
-        Map<Integer, Integer> memoria = new HashMap<>(); // Páginas na memória e seus contadores
-        int faltas = 0;
+        int faltasDePagina = 0;
 
-        for (int pagina : referencias) {
-            // Incrementa o contador para a página referenciada
-            contadorUso.put(pagina, contadorUso.getOrDefault(pagina, 0) + 1);
-
-            if (!memoria.containsKey(pagina)) {
-                faltas++;
-                
-                if (memoria.size() >= quadros) {
-                    // Encontra a página com menor contador para substituir
-                    int paginaSubstituir = memoria.entrySet().stream()
-                            .min(Map.Entry.comparingByValue())
-                            .get().getKey();
-                    
-                    memoria.remove(paginaSubstituir);
-                }
-                
-                // Adiciona a nova página com seu contador atual
-                memoria.put(pagina, contadorUso.get(pagina));
+        for (int ref : referencias) {
+            if (!contem(ref)) {
+                faltasDePagina++;
+                adicionar(ref);
             } else {
-                // Atualiza o contador na memória
-                memoria.put(pagina, contadorUso.get(pagina));
+                for (int i = 0; i < paginas.size(); i++) {
+                    if (paginas.get(i).getValor() == ref) {
+                        contadorUso[i]++;
+                        break;
+                    }
+                }
             }
         }
-        return faltas;
+
+        return faltasDePagina;
+    }
+
+    private boolean contem(int valor) {
+        for (Pagina pagina : paginas) {
+            if (pagina.getValor() == valor) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void adicionar(int valor) {
+        if (paginas.size() < capacidade) {
+            paginas.add(new Pagina(valor));
+            contadorUso[paginas.size() - 1] = 1;
+        } else {
+            int indiceMenorUso = encontrarMenorUso();
+            paginas.set(indiceMenorUso, new Pagina(valor));
+            contadorUso[indiceMenorUso] = 1;
+        }
+    }
+
+    private int encontrarMenorUso() {
+        int menorUso = Integer.MAX_VALUE;
+        int indiceMenorUso = -1;
+
+        for (int i = 0; i < paginas.size(); i++) {
+            if (contadorUso[i] < menorUso) {
+                menorUso = contadorUso[i];
+                indiceMenorUso = i;
+            }
+        }
+
+        return indiceMenorUso;
     }
 }
