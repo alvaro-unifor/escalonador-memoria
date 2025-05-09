@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        int[] referencias = {1, 3, 0, 3, 5, 6, 3, 0, 1, 5}; // sequência de páginas acessadas
-        int quadros = 3; // número de quadros na memória +++++++
+        int[] referencias = {1, 3, 0, 3, 5, 6, 3, 0, 1, 5};
+        int quadros = 3;
 
-        // Algoritmo do Relógio (existente)
+        // Algoritmo do Relógio
         AlgoritmoRelogio relogio = new AlgoritmoRelogio(quadros);
         System.out.println("Relógio: " + relogio.simular(referencias) + " faltas de página");
 
@@ -19,18 +19,8 @@ public class Main {
         AlgoritmoLRU lru = new AlgoritmoLRU(quadros);
         System.out.println("LRU: " + lru.simular(referencias) + " faltas de página");
 
-        // Algoritmo NFU (substitui o Ótimo)
+        // Algoritmo NFU
         AlgoritmoNFU nfu = new AlgoritmoNFU(quadros);
         System.out.println("NFU: " + nfu.simular(referencias) + " faltas de página");
-
-//        Relógio: 9 faltas de página
-//        FIFO: 9 faltas de página
-//        LRU: 8 faltas de página
-//        NFU: 8 faltas de página
-
-
-
-
-
     }
 }
