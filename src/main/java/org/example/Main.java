@@ -22,5 +22,15 @@ public class Main {
         // Algoritmo NFU (substitui o Ótimo)
         AlgoritmoNFU nfu = new AlgoritmoNFU(quadros);
         System.out.println("NFU: " + nfu.simular(referencias) + " faltas de página");
+
+//        Relógio: 9 faltas de página
+//        FIFO: 9 faltas de página
+//        LRU: 8 faltas de página
+//        NFU: 8 faltas de página
+
+
+
+
+
     }
 }
